@@ -11,9 +11,17 @@ module.exports = (sequelize, DataTypes) => {
         },
         idMember: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
             references: {
                 model: 'members',
+                key: 'id'
+            }
+        },
+        idClub: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'clubs', // Asegúrate de que el modelo `clubs` existe y está correctamente definido
                 key: 'id'
             }
         }
@@ -24,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Coment.associate = (models) => {
         Coment.belongsTo(models.Member, { foreignKey: 'idMember' });
+        Coment.belongsTo(models.Club, { foreignKey: 'idClub' }); 
     };
 
     return Coment;

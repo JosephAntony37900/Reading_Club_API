@@ -1,4 +1,4 @@
-const {Coment} =('../models')
+const {Coment, User, Member, Club} = require('../models');
 
 const createComent = async(req, res) => {
     try{
@@ -62,25 +62,44 @@ const deleteComent = async(req, res) => {
     }
 }
 
-const getComentsByClubId = async(req, res) => {
-    try { 
-    const coments = await Coment.findAll({
-        include: {
-            model: Member,
-            where: {idClub: req.params.clubId}
-        },
-        include: [
-          {
-            model: User,
-            attributes: ['name_User'] // Incluye el nombre del usuario
-          }
-        ]
-    });
-    res.status(200).json(coments);
-    } catch (error){
-    res.status(500).json({ error: error.message});
+const getComentsByClubId = async (req, res) => {
+    try {
+        const coments = await Coment.findAll({
+            where: { idClub: req.params.clubId },
+            include: [
+                {
+                    model: Member,
+                    include: {
+                        model: User,
+                        attributes: ['name_User']
+                    }
+                }
+            ]
+        });
+        res.status(200).json(coments);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-}
+};
+
+const getMemberId = async (req, res) => {
+    try {
+        const member = await Member.findOne({
+            where: {
+                userId: req.params.userId, // Asegúrate de que 'userId' es un campo válido en el modelo Member
+                clubId: req.params.clubId  // Asegúrate de que 'clubId' es un campo válido en el modelo Member
+            }
+        });
+        if (member) {
+            res.status(200).json(member);
+        } else {
+            res.status(404).json({ error: 'Member not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 module.exports = {
     createComent,
@@ -88,5 +107,6 @@ module.exports = {
     getComentById,
     updateComent,
     deleteComent,
-    getComentsByClubId
+    getComentsByClubId, 
+    getMemberId
 };
