@@ -1,5 +1,22 @@
 const { Member } = require('../models');
 
+// Método para unirse a un club
+const joinClub = async (req, res) => {
+  try {
+    const { idClub } = req.body;
+    const member = await Member.create({
+      idUser: req.userId,
+      idClub,
+      email: req.body.email, // Si necesitas estos datos
+      date: req.body.date, // Si necesitas estos datos
+      age: req.body.age // Si necesitas estos datos
+    });
+    res.status(201).json(member);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 const createMember = async (req, res) => {
   try {
     const member = await Member.create(req.body);
@@ -68,5 +85,6 @@ module.exports = {
   getAllMembers,
   getMemberById,
   updateMember,
-  deleteMember
+  deleteMember,
+  joinClub
 };

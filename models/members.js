@@ -11,15 +11,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         date: {
             type: DataTypes.DATE,
-            allowNull: false
-        },
-        comments: {
-            type: DataTypes.STRING(250),
-            allowNull: false
+            allowNull: true
         },
         age: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         idUser: {
             type: DataTypes.INTEGER,
@@ -28,7 +24,14 @@ module.exports = (sequelize, DataTypes) => {
                 model: 'users',
                 key: 'id'
             }
-        }
+        },
+        idClub: { // Relación con clubes
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'clubs',
+                key: 'id'
+            }}
     }, {
         tableName: 'members',
         timestamps: false
@@ -36,6 +39,8 @@ module.exports = (sequelize, DataTypes) => {
 
     Member.associate = (models) => {
         Member.belongsTo(models.User, { foreignKey: 'idUser' });
+        Member.belongsTo(models.Club, { foreignKey: 'idClub' });
+        Member.hasMany(models.Coment, { foreignKey: 'idMember' });
     };
 
     return Member;

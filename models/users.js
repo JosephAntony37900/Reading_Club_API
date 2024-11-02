@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         passwords: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING(200),
             allowNull: false
         }
     }, {

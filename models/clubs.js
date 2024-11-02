@@ -49,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
   Club.associate = (models) => {
       Club.belongsTo(models.User, { foreignKey: 'idOwner' });
       Club.belongsTo(models.Book, { foreignKey: 'idBook' });
+      Club.hasMany(models.Member, { foreignKey: 'idClub' });
   };
 
   return Club;

@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
     const Book = sequelize.define('Book', {
         id: {
             type: DataTypes.INTEGER,
-            primaryKey: true, // Corrige la clave primaria
+            primaryKey: true, 
             autoIncrement: true
         },
         title: {
@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         review: {
             type: DataTypes.STRING(200),
             allowNull: false
+        },
+        genero:{
+          type: DataTypes.STRING(50),
+          allowNull: false
         },
         user_Id: {
             type: DataTypes.INTEGER,

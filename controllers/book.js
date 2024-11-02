@@ -9,9 +9,9 @@ const createBook = async (req, res) => {
   }
 };
 
-const getAllBooks = async (req, res) => {
+const getBookByUser = async (req, res) => {
   try {
-    const books = await Book.findAll();
+    const books = await Book.findAll({ where: { user_Id: req.userId } });
     res.status(200).json(books);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -20,14 +20,14 @@ const getAllBooks = async (req, res) => {
 
 const getBookById = async (req, res) => {
   try {
-    const Book = await Book.findByPk(req.params.id);
-    if (Book) {
-      res.status(200).json(Book);
-    } else {
-      res.status(404).json({ error: 'Book not found' });
-    }
+      const book = await Book.findByPk(req.params.id);
+      if (!book) {
+          return res.status(404).json({ message: 'Libro no encontrado' });
+      }
+      res.json(book);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+      console.error("Error al obtener el libro:", error);
+      res.status(500).json({ message: 'Error al obtener el libro' });
   }
 };
 
@@ -65,7 +65,7 @@ const deleteBook = async (req, res) => {
 
 module.exports = {
   createBook,
-  getAllBooks,
+  getBookByUser,
   getBookById,
   updateBook,
   deleteBook
