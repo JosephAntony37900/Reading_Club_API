@@ -1,4 +1,4 @@
-const { Club, Member } = require('../models'); 
+const { Club, Member, Coment } = require('../models'); 
 
 const createClub = async (req, res) => {
   try {
@@ -50,7 +50,7 @@ const updateClub = async (req, res) => {
 const deleteClub = async (req, res) => {
   try {
     // Eliminar comentarios relacionados
-    await Comment.destroy({
+    await Coment.destroy({
       where: { idClub: req.params.id }
     });
     
