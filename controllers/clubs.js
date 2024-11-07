@@ -49,6 +49,12 @@ const updateClub = async (req, res) => {
 
 const deleteClub = async (req, res) => {
   try {
+    // Eliminar comentarios relacionados
+    await Comment.destroy({
+      where: { idClub: req.params.id }
+    });
+    
+    // Luego eliminar el club
     const deleted = await Club.destroy({
       where: { id: req.params.id }
     });
@@ -61,6 +67,7 @@ const deleteClub = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 // Obtener clubes creados por el usuario autenticado
 const getClubsByUser = async (req, res) => {
